@@ -23,7 +23,7 @@
 
     <target name="-deploy-test">
         <echo message="Syncronize with staging server (DRY-RUN)"/>
-        <exec executable="sync_mobile_toolkit.sh">
+        <exec executable="{project.sync.script}">
             <arg value="test"/>
             <arg value="${package.prefix}"/>
         </exec>
@@ -31,7 +31,7 @@
 
     <target name="-deploy">
         <echo message="Syncronize with staging server"/>
-        <exec executable="sync_mobile_toolkit.sh">
+        <exec executable="{project.sync.script}">
             <arg value="sync"/>
             <arg value="${package.prefix}"/>
         </exec>
