@@ -25,7 +25,7 @@
         <echo message="Syncronize with staging server (DRY-RUN)"/>
         <exec executable="${project.sync.script}">
             <arg value="test"/>
-            <arg value="${package.prefix}"/>
+            <arg value="${project.sync.folder}"/>
         </exec>
     </target>
 
@@ -33,7 +33,7 @@
         <echo message="Syncronize with staging server"/>
         <exec executable="${project.sync.script}">
             <arg value="sync"/>
-            <arg value="${package.prefix}"/>
+            <arg value="${project.sync.folder}"/>
         </exec>
     </target>
 
