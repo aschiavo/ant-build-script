@@ -37,8 +37,8 @@
         </exec>
     </target>
 
-    <target name="update-version" depends="-update-version"/>
-    <target name="package" depends="-package"/>
+    <target name="package" depends="-update-version,
+                                    -package"/>
     <target name="deploy" depends="-deploy"/>
     <target name="deploy-test" depends="-deploy-test"/>
 
