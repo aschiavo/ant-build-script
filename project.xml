@@ -1,7 +1,43 @@
 <?xml version="1.0"?>
 <!DOCTYPE project>
 <project name="Project Build" default="build" basedir="../">
-	
+
     <!-- Use this file to define any custom build targets (for example, automatically deploying via FTP). -->
+
+    <target name="-update-version">
+        <echo message="Setting build number..."/>
+        <buildnumber file="${dir.source}/version"/>
+    </target>
+
+    <target name="-package" depends="-mkdirs">
+        <echo message="Packaging new files..."/>
+
+        <property file="${dir.source}/version"/>
+
+        <zip destfile="./${dir.distribution}/${package.name}_v${build.number}.${package.exten}">
+            <zipfileset dir="${dir.publish}/" prefix="${package.prefix}"/>
+        </zip>
+
+        <echo message="A packaged version of all non-dev files are now in: ./${dir.distribution}."/>
+    </target>
+
+    <target name="-deploy-test">
+        <echo message="Syncronize with staging server (DRY-RUN)"/>
+        <exec executable="sync_mobile_toolkit.sh">
+            <arg value="test"/>
+            <arg value="${package.prefix}"/>
+        </exec>
+    </target>
+
+    <target name="-deploy">
+        <echo message="Syncronize with staging server"/>
+        <exec executable="sync_mobile_toolkit.sh">
+            <arg value="sync"/>
+            <arg value="${package.prefix}"/>
+        </exec>
+    </target>
+
+    <target name="deploy" depends="-deploy"/>
+    <target name="deploy-test" depends="-deploy-test"/>
 
 </project>
