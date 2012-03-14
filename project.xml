@@ -9,7 +9,12 @@
         <buildnumber file="${dir.source}/version"/>
     </target>
 
-    <target name="-package" depends="-mkdirs">
+    <target name="-mkdir-dist">
+        <echo message="Creating directory structure... ${dir.distribution}"/>
+        <mkdir dir="${dir.distribution}"/>
+    </target>
+
+    <target name="-package" depends="-mkdir-dist">
         <echo message="Packaging new files..."/>
 
         <property file="${dir.source}/version"/>
@@ -38,7 +43,7 @@
     </target>
 
     <target name="package" depends="-update-version,
-                                    -package"/>
+        -package"/>
     <target name="deploy" depends="-deploy"/>
     <target name="deploy-test" depends="-deploy-test"/>
 
