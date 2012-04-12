@@ -3,6 +3,32 @@
 <project name="Project Build" default="build" basedir="../">
 
     <!-- Use this file to define any custom build targets (for example, automatically deploying via FTP). -->
+    <target name="deploy">
+    <if>
+        <equals arg1="${env}" arg2="dev"/>
+        <then>
+            <!-- Build a dev environment -->
+            <echo message="Deploying to Development Environment..."/>
+            <antcall target="-deploy.dev" />
+        </then>
+
+        <elseif>
+            <equals arg1="${env}" arg2="test"/>
+            <then>
+                <!-- Build a test environment -->
+                <echo message="Deploying to Test Environment..."/>
+                <antcall target="-deploy.test" />
+            </then>
+        </elseif>
+
+        <else>
+            <!-- Build a production environment -->
+            <echo message="Deploying to Production Environment..."/>
+            <antcall target="-deploy.production" />
+        </else>
+    </if>
+    </target>
+
 
     <target name="-update-version">
         <echo message="Setting build number..."/>
@@ -31,20 +57,30 @@
         <exec executable="${project.sync.script}">
             <arg value="test"/>
             <arg value="${project.sync.folder}"/>
+            <arg value="auth"/>
         </exec>
     </target>
 
-    <target name="-deploy">
+    <target name="-deploy.test">
         <echo message="Syncronize with staging server"/>
         <exec executable="${project.sync.script}">
             <arg value="sync"/>
             <arg value="${project.sync.folder}"/>
+            <arg value="stg"/>
+        </exec>
+    </target>
+
+    <target name="-deploy.dev">
+        <echo message="Syncronize with authoring server"/>
+        <exec executable="${project.sync.script}">
+            <arg value="sync"/>
+            <arg value="${project.sync.folder}"/>
+            <arg value="auth"/>
         </exec>
     </target>
 
     <target name="package" depends="-update-version,
         -package"/>
-    <target name="deploy" depends="-deploy"/>
     <target name="deploy-test" depends="-deploy-test"/>
 
 </project>
